@@ -2,6 +2,6 @@
 {
     public class Project
     {
-
+        private Guid Id { get; set; }
     }
 }
