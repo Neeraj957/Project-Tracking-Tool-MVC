@@ -1,0 +1,15 @@
+﻿@model Project_Tracking_Tool_MVC.Models.ViewModels.AddProjectRequest
+@{
+}
+
+<form class="mx-5" asp-controller="AdminDashboard" asp-action="AddProject" method="post">
+    <div class="mb-3">
+        <label for="projectTitle" class="form-label">Project Title</label>
+        <input type="text" class="form-control" id="projectTitle" asp-for="ProjectTitle">
+    </div>
+    <div class="mb-3">
+        <label for="projectDescription" class="form-label">Project Description</label>
+        <textarea class="form-control" id="projectDescription" rows="4" asp-for="ProjectDescription"></textarea>
+    </div>
+    <button type="submit" class="btn btn-dark">Add project</button>
+</form>

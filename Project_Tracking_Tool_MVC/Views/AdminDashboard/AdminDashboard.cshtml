@@ -1,0 +1,125 @@
+﻿@model List<Project_Tracking_Tool_MVC.Models.DomainModel.Project>
+@{
+}
+
+<SideMain>
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-white" style="width: 280px; background-color: black">
+        <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
+           asp-controller="AdminDashboard" asp-action="AdminDashboard">
+            <svg class="bi me-2" width="40" height="32"></svg>
+            <span class="fs-4">Admin Dashboard</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="#" class="nav-link dashboard-link" aria-current="page" id="profileLink" style="color:white">
+                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#home" /></svg>
+                    Profile
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link dashboard-link" id="managersLink" style="color:white">
+                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2" /></svg>
+                    Manage Managers
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link dashboard-link" id="addProjectsLink" style="color:white">
+                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#table" /></svg>
+                    Add Projects
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link dashboard-link" id="assignProjectsLink" style="color:white">
+                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid" /></svg>
+                    Assign Projects
+                </a>
+            </li>
+        </ul>
+        <hr>
+    </div>
+    <div class="container-md my-5">
+        <div class="col-lg-8 col-md-10 col-sm-12 mx-auto" id="addProjectForm">
+            <h1>Admin Dashboard</h1>
+            <div class="container py-3">
+                <div class="container py-5">
+                    <h3 class="mb-3">All Projects</h3>
+                    @if (Model != null && Model.Any())
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Project Name</th>
+                                    <th>Project Description</th>
+                                    <th>Date Created</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var project in Model)
+                                {
+                                    <tr>
+                                        <td>@project.ProjectTitle</td>
+                                        <td>@project.ProjectDescription</td>
+                                        <td>@project.ProjectCreationDate</td>
+                                        <td>
+                                           <a asp-area="" asp-controller="AdminDashboard" asp-action="EditProject">Edit</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>                 
+                    }
+                    else
+                    {
+                        <p>No Projects found! Add Projects?</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</SideMain>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Handle click on navigation links
+            $('.dashboard-link').click(function (e) {
+                e.preventDefault();
+
+                // Remove active class from all links
+                $('.dashboard-link').removeClass('active');
+
+                // Add active class to the clicked link
+                $(this).addClass('active');
+
+                // Remove active styles from all links
+                $('.dashboard-link').css('background-color', 'black');
+                $('.dashboard-link').css('color', 'white');
+
+                // Apply active styles to the clicked link
+                $(this).css('background-color', 'white');
+                $(this).css('color', 'black');
+
+                // Load content or perform other actions based on the clicked link
+                var linkId = $(this).attr('id');
+                switch (linkId) {
+                    case 'profileLink':
+                        // Handle Profile link click
+                        break;
+                    case 'managersLink':
+                        // Handle Managers link click
+                        break;
+                    case 'addProjectsLink':
+                        // Handle Add Projects link click
+                        $('#addProjectForm').load("/AdminDashboard/AddProjectFormPartial");
+                        break;
+                    case 'assignProjectsLink':
+                        // Handle Assign Projects link click
+                        // Add specific handling for Assign Projects if needed
+                        break;
+                    // Add cases for other links as needed
+                }
+            });
+        });
+    </script>
+}
