@@ -24,13 +24,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link dashboard-link" id="addProjectsLink" style="color:white">
+                <a href="#" class="nav-link dashboard-link" id="addProjectLink" style="color:white">
                     <svg class="bi me-2" width="16" height="16"><use xlink:href="#table" /></svg>
                     Add Projects
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link dashboard-link" id="assignProjectsLink" style="color:white">
+                <a href="#" class="nav-link dashboard-link" id="assignProjectLink" style="color:white">
                     <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid" /></svg>
                     Assign Projects
                 </a>
@@ -38,20 +38,23 @@
         </ul>
         <hr>
     </div>
-    <div class="container-md my-5">
-        <div class="col-lg-8 col-md-10 col-sm-12 mx-auto" id="addProjectForm">
-            <h1>Admin Dashboard</h1>
-            <div class="container py-3">
-                <div class="container py-5">
-                    <h3 class="mb-3">All Projects</h3>
+    <div class="container-md p-0 mx-auto">
+        <div class="col-lg-10 m-2 mx-auto" id="commonDisplayArea">
+            <div class="container bg-secondary p-1">
+                <h2 class="m-2">Admin Dashboard</h2>
+            </div>
+            <div class="container py-5 px-3 border my-5">
+                <div class="container py-3">
+                    <h3 class="mb-3 text-center">All Projects</h3>
                     @if (Model != null && Model.Any())
                     {
-                        <table class="table">
+                        <table class="table table-bordered table-striped text-center">
                             <thead>
                                 <tr>
                                     <th>Project Name</th>
                                     <th>Project Description</th>
                                     <th>Date Created</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -62,28 +65,59 @@
                                         <td>@project.ProjectDescription</td>
                                         <td>@project.ProjectCreationDate</td>
                                         <td>
-                                           <a asp-area="" asp-controller="AdminDashboard" asp-action="EditProject">Edit</a>
+                                            <button type="button" class="btn btn-sm btn-dark">
+                                                <a id="editProjectLink" class="text-white"
+                                                   asp-area=""
+                                                   asp-controller="AdminDashboard"
+                                                   asp-action="EditProjectFormPartial"
+                                                   asp-route-id="@project.ProjectId"
+                                                   data-project-id="@project.ProjectId">Edit</a>
+                                            </button>
                                         </td>
                                     </tr>
                                 }
                             </tbody>
-                        </table>                 
+                        </table>
                     }
                     else
                     {
-                        <p>No Projects found! Add Projects?</p>
+                        <p class="text-center">No Projects found! Add Projects?</p>
                     }
                 </div>
             </div>
         </div>
     </div>
+
+
 </SideMain>
 
 @section Scripts {
     <script>
         $(document).ready(function () {
+
+            $(document).on('click', '#editProjectLink', function (e) {
+                e.preventDefault();
+
+                // Get the project ID from the data attribute
+                var projectId = $(this).data('projectId');
+
+                // Make an AJAX request to get the partial view content
+                $.ajax({
+                    url: '/AdminDashboard/EditProjectFormPartial',
+                    type: 'GET',
+                    data: { id: projectId }, // Pass the project ID as a parameter
+                    success: function (data) {
+                        // Update the content of the specified container
+                        $('#commonDisplayArea').html(data);
+                    },
+                    error: function () {
+                        // Handle errors if needed
+                    }
+                });
+            });
+
             // Handle click on navigation links
-            $('.dashboard-link').click(function (e) {
+            $(document).on('click', '.dashboard-link', function (e) {
                 e.preventDefault();
 
                 // Remove active class from all links
@@ -109,11 +143,11 @@
                     case 'managersLink':
                         // Handle Managers link click
                         break;
-                    case 'addProjectsLink':
+                    case 'addProjectLink':
                         // Handle Add Projects link click
-                        $('#addProjectForm').load("/AdminDashboard/AddProjectFormPartial");
+                        $('#commonDisplayArea').load("/AdminDashboard/AddProjectFormPartial");
                         break;
-                    case 'assignProjectsLink':
+                    case 'assignProjectLink':
                         // Handle Assign Projects link click
                         // Add specific handling for Assign Projects if needed
                         break;
