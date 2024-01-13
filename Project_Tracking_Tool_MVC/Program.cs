@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Project_Tracking_Tool_MVC.Data;
+using Project_Tracking_Tool_MVC.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ProjectTrackingToolDbContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("ProjectTrackingToolConnectionString")));
+
+builder.Services.AddScoped<IProjectRepository, ProjectReposirtory>();
 
 var app = builder.Build();
 
