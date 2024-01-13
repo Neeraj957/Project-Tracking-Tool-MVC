@@ -2,28 +2,38 @@
 @{
 }
 
-
-<form class="mx-5 my-5" asp-controller="AdminDashboard" asp-action="UpdateProject" method="post">
-    <div class="mb-3">
-        <label for="projectId" class="form-label">Project Id</label>
-        <input type="text" class="form-control" id="projectId" asp-for="ProjectId" readonly>
-    </div>
-    <div class="mb-3">
-        <label for="projectTitle" class="form-label">Project Title</label>
-        <input type="text" class="form-control" id="projectTitle" asp-for="ProjectTitle">
-    </div>
-    <div class="mb-3">
-        <label for="projectDescription" class="form-label">Project Description</label>
-        <textarea class="form-control" id="projectDescription" rows="4" asp-for="ProjectDescription"></textarea>
-    </div>
-    <div class="mb-3">
-        <div class="d-flex">
-            <button type="submit" class="btn btn-dark">Update</button>
-            <button type="submit" class="btn btn-danger ms-2"
-            asp-area=""
-            asp-controller="AdminDashboard"
-            asp-action="DeleteProject"
-            >Delete</button>
+@if (Model != null)
+{
+    <form class="mx-5 my-5" asp-controller="AdminDashboard" asp-action="UpdateProject" method="post">
+        <div class="mb-3">
+            <label for="projectId" class="form-label">Project Id</label>
+            <input type="text" class="form-control" id="projectId" asp-for="ProjectId" readonly>
         </div>
-    </div>
-</form>
+        <div class="mb-3">
+            <label for="projectTitle" class="form-label">Project Title</label>
+            <input type="text" class="form-control" id="projectTitle" asp-for="ProjectTitle">
+        </div>
+        <div class="mb-3">
+            <label for="projectDescription" class="form-label">Project Description</label>
+            <textarea class="form-control" id="projectDescription" rows="4" asp-for="ProjectDescription"></textarea>
+        </div>
+        <div class="mb-3">
+            <div class="d-flex">
+                <button type="submit" class="btn btn-dark">Update</button>
+                <button type="submit" class="btn btn-danger ms-2"
+                        asp-area=""
+                        asp-controller="AdminDashboard"
+                        asp-action="DeleteProject">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </form>
+}
+
+else
+{
+    <p> Project not found!</p>    
+}
+
+

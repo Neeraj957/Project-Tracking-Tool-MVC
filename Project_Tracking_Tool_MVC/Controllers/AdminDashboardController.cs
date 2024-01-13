@@ -1,23 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Project_Tracking_Tool_MVC.Data;
 using Project_Tracking_Tool_MVC.Models.DomainModel;
 using Project_Tracking_Tool_MVC.Models.ViewModels;
+using Project_Tracking_Tool_MVC.Repositories;
 
 namespace Project_Tracking_Tool_MVC.Controllers
 {
     public class AdminDashboardController : Controller
     {
+        private IProjectRepository _projectRepository;
 
-        private ProjectTrackingToolDbContext _projectTrackingToolDbContext;
-        public AdminDashboardController(ProjectTrackingToolDbContext projectTrackingToolDbContext)
+        public AdminDashboardController(IProjectRepository projectRepository)
         {
-            _projectTrackingToolDbContext = projectTrackingToolDbContext;
+            _projectRepository = projectRepository;
         }
 
         [HttpGet]
-        public IActionResult AdminDashboard()
+        public async Task<IActionResult> AdminDashboard()
         {
-            var projects = _projectTrackingToolDbContext.Projects.ToList();
+            var projects = await _projectRepository.GetAllAsync();
 
             return View(projects);
         }
@@ -29,7 +31,7 @@ namespace Project_Tracking_Tool_MVC.Controllers
 
 
         [HttpPost]
-        public IActionResult AddProject(AddProjectRequest addProjectRequest)
+        public async Task<IActionResult> AddProject(AddProjectRequest addProjectRequest)
         {
             var project = new Project
             {
@@ -38,17 +40,16 @@ namespace Project_Tracking_Tool_MVC.Controllers
                 ProjectCreationDate = DateTime.Now
             };
 
-            _projectTrackingToolDbContext.Projects.Add(project);
-            _projectTrackingToolDbContext.SaveChanges();
+            await _projectRepository.AddAsync(project);
 
             //return View("~/Views/AdminDashboard/AdminDashboard.cshtml");
             return RedirectToAction(nameof(AdminDashboard));
         }
 
         [HttpGet]
-        public IActionResult EditProjectFormPartial(Guid id)
+        public async Task<IActionResult> EditProjectFormPartial(Guid id)
         {
-            var project = _projectTrackingToolDbContext.Projects.FirstOrDefault(x => x.ProjectId == id);
+            var project = await _projectRepository.GetAsync(id);
 
             if (project != null)
             {
@@ -66,22 +67,32 @@ namespace Project_Tracking_Tool_MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateProject(EditProjectRequest editProjectRequest)
+        public async Task<IActionResult> UpdateProject(EditProjectRequest editProjectRequest)
         {
             if (ModelState.IsValid)
             {
-                var existingProject = _projectTrackingToolDbContext.Projects.Find(editProjectRequest.ProjectId);
 
-                if (existingProject != null)
+                var project = new Project
                 {
-                    existingProject.ProjectTitle = editProjectRequest.ProjectTitle;
-                    existingProject.ProjectDescription = editProjectRequest.ProjectDescription;
+                    ProjectId = editProjectRequest.ProjectId,
+                    ProjectTitle = editProjectRequest.ProjectTitle,
+                    ProjectDescription = editProjectRequest.ProjectDescription,
+                };
 
-                    _projectTrackingToolDbContext.SaveChanges();
+                var updatedTag = await _projectRepository.UpdateAsync(project);
 
-                    // You might want to return a JSON response for AJAX requests
-                    return RedirectToAction(nameof(AdminDashboard));
+                if (updatedTag != null)
+                {
+                    //Show success notification
                 }
+                else 
+                { 
+                    //Show error notification
+                }
+
+                // You might want to return a JSON response for AJAX requests
+                return RedirectToAction(nameof(AdminDashboard));
+                
             }
 
             // If there are validation errors or the project is not found, return the partial view with errors
@@ -89,19 +100,18 @@ namespace Project_Tracking_Tool_MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult DeleteProject(EditProjectRequest editProjectRequest) 
+        public async Task<IActionResult> DeleteProject(EditProjectRequest editProjectRequest) 
         {
-            var project = _projectTrackingToolDbContext.Projects.Find(editProjectRequest.ProjectId);
+             var deletedProject = _projectRepository.DeleteAsync(editProjectRequest.ProjectId);
 
-            if (project != null)
+            if (deletedProject != null)
             {
-                _projectTrackingToolDbContext.Projects.Remove(project);
-                _projectTrackingToolDbContext.SaveChanges();
-
                 //show success notification
                 return RedirectToAction(nameof(AdminDashboard));
+
             }
 
+            //show an error message
             return PartialView("_EditProjectForm", editProjectRequest);
 
         }
