@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Project_Tracking_Tool_MVC.Models.DomainModel;
-using Task = Project_Tracking_Tool_MVC.Models.DomainModel.Task;
+using Job = Project_Tracking_Tool_MVC.Models.DomainModel.Job;
 
 namespace Project_Tracking_Tool_MVC.Data
 {
@@ -13,8 +13,7 @@ namespace Project_Tracking_Tool_MVC.Data
 
         public DbSet<Project> Projects { get; set; }
 
-        public DbSet<Task> Tasks { get; set; }
-
+        public DbSet<Job> Jobs { get; set; }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }
     }
 }
