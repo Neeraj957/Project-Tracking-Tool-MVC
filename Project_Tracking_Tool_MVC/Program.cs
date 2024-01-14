@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Project_Tracking_Tool_MVC.Data;
 using Microsoft.AspNetCore.Identity;
+using Project_Tracking_Tool_MVC.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("ProjectTrackingT
 builder.Services.AddDefaultIdentity<IdentityUser>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ProjectTrackingToolDbContext>();
+builder.Services.AddScoped<IProjectRepository, ProjectReposirtory>();
 
 var app = builder.Build();
 
