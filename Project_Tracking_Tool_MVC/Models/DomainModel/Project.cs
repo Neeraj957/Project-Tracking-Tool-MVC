@@ -15,7 +15,7 @@ namespace Project_Tracking_Tool_MVC.Models.DomainModel
 
         public DateTime ProjectCreationDate { get; set; }
 
-        public ICollection<Task> Tasks { get; set; }
+        public ICollection<Job> Jobs { get; set; }
 
     }
 }
