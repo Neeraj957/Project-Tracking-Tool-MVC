@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Project_Tracking_Tool_MVC.Models.DomainModel
 {
+    [Authorize]
     public class Project
     {
         [Key]
