@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project_Tracking_Tool_MVC.Data;
 
@@ -11,9 +12,11 @@ using Project_Tracking_Tool_MVC.Data;
 namespace Project_Tracking_Tool_MVC.Migrations
 {
     [DbContext(typeof(ProjectTrackingToolDbContext))]
-    partial class ProjectTrackingToolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240113174804_NewUserRegistrationCols")]
+    partial class NewUserRegistrationCols
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
