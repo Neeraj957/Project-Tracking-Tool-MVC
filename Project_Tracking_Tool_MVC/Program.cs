@@ -1,6 +1,6 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Project_Tracking_Tool_MVC.Data;
-using Microsoft.AspNetCore.Identity;
 using Project_Tracking_Tool_MVC.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +20,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>()
 builder.Services.AddScoped<IProjectRepository, ProjectReposirtory>();
 
 
+builder.Services.AddScoped<IJobRepository, JobReposirtory>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,7 +32,7 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();;
+app.UseAuthentication(); ;
 
 app.UseAuthorization();
 

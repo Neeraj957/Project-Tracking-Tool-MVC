@@ -1,21 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 
 namespace Project_Tracking_Tool_MVC.Controllers
 {
-   // [Authorize]
+
+    // [Authorize]
+
+
     public class AppRolesController : Controller
     {
-        
+
         private readonly RoleManager<IdentityRole> roleManager;
 
-        public AppRolesController( RoleManager<IdentityRole> roleManager)
+        public AppRolesController(RoleManager<IdentityRole> roleManager)
         {
             this.roleManager = roleManager;
-            
+
         }
 
         //lists all the roles created by users
@@ -47,7 +50,7 @@ namespace Project_Tracking_Tool_MVC.Controllers
             return RedirectToAction("Index");
         }
 
-        
+
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null || roleManager.Roles == null)
@@ -94,7 +97,7 @@ namespace Project_Tracking_Tool_MVC.Controllers
             }
         }
     }
-    
+
 }
 
 

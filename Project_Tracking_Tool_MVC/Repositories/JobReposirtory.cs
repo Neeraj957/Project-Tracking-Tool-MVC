@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Project_Tracking_Tool_MVC.Data;
 using Project_Tracking_Tool_MVC.Models.DomainModel;
-using Project_Tracking_Tool_MVC.Models.ViewModels;
 
 namespace Project_Tracking_Tool_MVC.Repositories
 {
@@ -26,7 +25,7 @@ namespace Project_Tracking_Tool_MVC.Repositories
         {
             var existingJob = await _projectTrackingToolDbContext.Jobs.FindAsync(id);
 
-            if (existingJob != null) 
+            if (existingJob != null)
             {
                 _projectTrackingToolDbContext.Jobs.Remove(existingJob);
                 await _projectTrackingToolDbContext.SaveChangesAsync();
@@ -44,14 +43,14 @@ namespace Project_Tracking_Tool_MVC.Repositories
 
         public Task<Job?> GetAsync(Guid id)
         {
-            return _projectTrackingToolDbContext.Jobs.FirstOrDefaultAsync(x=> x.JobId == id);
+            return _projectTrackingToolDbContext.Jobs.FirstOrDefaultAsync(x => x.JobId == id);
         }
 
         public async Task<Job?> UpdateAsync(Job job)
         {
             var existingJob = await _projectTrackingToolDbContext.Jobs.FindAsync(job.JobId);
 
-            if (existingJob != null) 
+            if (existingJob != null)
             {
                 existingJob.JobName = job.JobName;
                 existingJob.JobDescription = job.JobDescription;

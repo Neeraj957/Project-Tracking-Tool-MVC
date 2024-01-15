@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Project_Tracking_Tool_MVC.Data;
 using Project_Tracking_Tool_MVC.Models.DomainModel;
-using Project_Tracking_Tool_MVC.Models.ViewModels;
 
 namespace Project_Tracking_Tool_MVC.Repositories
 {
@@ -27,7 +26,7 @@ namespace Project_Tracking_Tool_MVC.Repositories
         {
             var existingProject = await _projectTrackingToolDbContext.Projects.FindAsync(id);
 
-            if (existingProject != null) 
+            if (existingProject != null)
             {
                 _projectTrackingToolDbContext.Projects.Remove(existingProject);
                 await _projectTrackingToolDbContext.SaveChangesAsync();
@@ -45,14 +44,14 @@ namespace Project_Tracking_Tool_MVC.Repositories
 
         public Task<Project?> GetAsync(Guid id)
         {
-            return _projectTrackingToolDbContext.Projects.FirstOrDefaultAsync(x=> x.ProjectId == id);
+            return _projectTrackingToolDbContext.Projects.FirstOrDefaultAsync(x => x.ProjectId == id);
         }
 
         public async Task<Project?> UpdateAsync(Project project)
         {
             var existingProject = await _projectTrackingToolDbContext.Projects.FindAsync(project.ProjectId);
 
-            if (existingProject != null) 
+            if (existingProject != null)
             {
                 existingProject.ProjectTitle = project.ProjectTitle;
                 existingProject.ProjectDescription = project.ProjectDescription;

@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Project_Tracking_Tool_MVC.Data;
 using Project_Tracking_Tool_MVC.Models.DomainModel;
 using Project_Tracking_Tool_MVC.Models.ViewModels;
 using Project_Tracking_Tool_MVC.Repositories;
@@ -27,7 +25,7 @@ namespace Project_Tracking_Tool_MVC.Controllers
         }
 
         public IActionResult AddProjectFormPartial()
-        { 
+        {
             return PartialView("_AddProjectForm");
         }
 
@@ -87,14 +85,14 @@ namespace Project_Tracking_Tool_MVC.Controllers
                 {
                     //Show success notification
                 }
-                else 
-                { 
+                else
+                {
                     //Show error notification
                 }
 
                 // You might want to return a JSON response for AJAX requests
                 return RedirectToAction(nameof(AdminDashboard));
-                
+
             }
 
             // If there are validation errors or the project is not found, return the partial view with errors
@@ -102,9 +100,9 @@ namespace Project_Tracking_Tool_MVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> DeleteProject(EditProjectRequest editProjectRequest) 
+        public async Task<IActionResult> DeleteProject(EditProjectRequest editProjectRequest)
         {
-             var deletedProject = _projectRepository.DeleteAsync(editProjectRequest.ProjectId);
+            var deletedProject = await _projectRepository.DeleteAsync(editProjectRequest.ProjectId);
 
             if (deletedProject != null)
             {
