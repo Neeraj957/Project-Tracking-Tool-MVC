@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Project_Tracking_Tool_MVC.Models.DomainModel;
 using Project_Tracking_Tool_MVC.Models.ViewModels;
@@ -10,10 +11,12 @@ namespace Project_Tracking_Tool_MVC.Controllers
     public class AdminDashboardController : Controller
     {
         private IProjectRepository _projectRepository;
+      
 
         public AdminDashboardController(IProjectRepository projectRepository)
         {
             _projectRepository = projectRepository;
+           
         }
 
         [HttpGet]
@@ -116,6 +119,6 @@ namespace Project_Tracking_Tool_MVC.Controllers
 
         }
 
-    }
 
+    }
 }
