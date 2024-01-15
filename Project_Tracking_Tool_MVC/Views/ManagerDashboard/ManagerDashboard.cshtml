@@ -1,0 +1,184 @@
+﻿@model Project_Tracking_Tool_MVC.Models.ViewModels.ManagerDashboard
+@{
+}
+
+<SideMain>
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-white" style="width: 280px; background-color: black">
+        <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
+           asp-controller="ManagerDashboard" asp-action="ManagerDashboard">
+            <svg class="bi me-2" width="40" height="32"></svg>
+            <span class="fs-4">Manager Dashboard</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="#" class="nav-link dashboard-link" aria-current="page" id="profileLink" style="color:white">
+                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#home" /></svg>
+                    Profile
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link dashboard-link" id="createJobLink" style="color:white">
+                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#table" /></svg>
+                    Create Job
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link dashboard-link" id="kanbanLink" style="color:white">
+                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid" /></svg>
+                    Kanban
+                </a>
+            </li>
+        </ul>
+        <hr>
+    </div>
+    <div class="container-md p-0 mx-auto" style="height: 100vh;">
+        <div class="col-lg-10 m-2 mx-auto" id="commonDisplayArea" style="height: 80vh; overflow-y: auto;">
+            <div class="container bg-secondary p-1" style="position: sticky; top: 0; z-index: 100;">
+                <h2 class="m-2">Manager Dashboard</h2>
+            </div>
+            <div class="container py-5 px-3 border my-5">
+                <div class="container py-3">
+                    <h3 class="mb-3 text-center">All Projects</h3>
+                    @if (Model != null)
+                    {
+                        <table class="table table-bordered table-striped text-center">
+                            <thead>
+                                <tr>
+                                    <th>Project Name</th>
+                                    <th>Project Description</th>
+                                    <th>Date Created</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var project in Model.ProjectsForDisplay)
+                                {
+                                    <tr>
+                                        <td>@project.ProjectTitle</td>
+                                        <td>@project.ProjectDescription</td>
+                                        <td>@project.ProjectCreationDate</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p class="text-center">No Projects found! Add Projects?</p>
+                    }
+                </div>
+            </div>
+            <div class="container py-5 px-3 border my-5">
+                <div class="container py-3">
+                    <h3 class="mb-3 text-center">All Jobs</h3>
+                    @if (Model != null)
+                    {
+                        <table class="table table-bordered table-striped text-center">
+                            <thead>
+                                <tr>
+                                    <th>Job Name</th>
+                                    <th>Job Description</th>
+                                    <th>Create Date</th>
+                                    <th>Domain</th>
+                                    <th>Status</th>
+                                    <th>Deadline</th>
+                                    <th>Parent Project</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var job in Model.JobsForDisplay)
+                                {
+                                    <tr>
+                                        <td>@job.JobName</td>
+                                        <td>@job.JobDescription</td>
+                                        <td>@job.JobDomain</td>
+                                        <td>@job.JobStartDate</td>
+                                        <td>@job.Status</td>
+                                        <td>@job.JobDeadlineDate</td>
+                                        <td>@job.Project.ProjectTitle</td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-dark">
+                                                <a id="editProjectLink" class="text-white"
+                                                   asp-area=""
+                                                   asp-controller="ManagerDashboard"
+                                                   asp-action="EditJobFormPartial"
+                                                   asp-route-id="@job.JobId"
+                                                   data-project-id="@job.JobId">Edit</a>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p class="text-center">No Projects found! Add Projects?</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</SideMain>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            $(document).on('click', '#editJobLink', function (e) {
+                e.preventDefault();
+
+                // Get the job ID from the data attribute
+                var jobId = $(this).data('JobId');
+
+                // Make an AJAX request to get the partial view content
+                $.ajax({
+                    url: '/ManagerDashboard/EditJobFormPartial',
+                    type: 'GET',
+                    data: { id: jobId }, // Pass the job ID as a parameter
+                    success: function (data) {
+                        // Update the content of the specified container
+                        $('#commonDisplayArea').html(data);
+                    },
+                    error: function () {
+                        // Handle errors if needed
+                    }
+                });
+            });
+
+            // Handle click on navigation links
+            $(document).on('click', '.dashboard-link', function (e) {
+                e.preventDefault();
+
+                // Remove active class from all links
+                $('.dashboard-link').removeClass('active');
+
+                // Add active class to the clicked link
+                $(this).addClass('active');
+
+                // Remove active styles from all links
+                $('.dashboard-link').css('background-color', 'black');
+                $('.dashboard-link').css('color', 'white');
+
+                // Apply active styles to the clicked link
+                $(this).css('background-color', 'white');
+                $(this).css('color', 'black');
+                var linkId = $(this).attr('id');
+                switch (linkId) {
+                    case 'profileLink':
+                        $('#commonDisplayArea').load("/ManagerDashboard/CreateJobFormPartial");
+                        break;
+                    case 'createJobLink':
+                        $('#commonDisplayArea').load("/ManagerDashboard/CreateJobFormPartial");
+                        break;
+                    case 'kanbanLink':
+                        break;
+                }
+            });
+        });
+    </script>
+}

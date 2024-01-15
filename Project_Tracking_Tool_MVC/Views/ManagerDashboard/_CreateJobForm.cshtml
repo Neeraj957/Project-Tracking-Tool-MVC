@@ -1,0 +1,38 @@
+﻿@using Project_Tracking_Tool_MVC.Models.DomainModel
+@model Project_Tracking_Tool_MVC.Models.ViewModels.CreateJobRequest
+@{
+    var projects = ViewBag.Projects as List<Project>;
+}
+
+<form class="mx-5 my-5" asp-controller="ManagerDashboard" asp-action="AddJob" method="post">
+    <div class="mb-3">
+        <label for="projectId" class="form-label">Project</label>
+        @if (projects != null)
+        {
+            <select class="form-control" id="projectId" asp-for="ProjectId" asp-items="new SelectList(projects, nameof(Project.ProjectId), nameof(Project.ProjectTitle))">
+                <option value="">Select Project</option>
+            </select>
+        }
+        else
+        {
+            <p>No projects available.</p>
+        }
+    </div>
+    <div class="mb-3">
+        <label for="jobName" class="form-label">Job Title</label>
+        <input type="text" class="form-control" id="jobName" asp-for="JobName">
+    </div>
+    <div class="mb-3">
+        <label for="jobDescription" class="form-label">Job Description</label>
+        <textarea class="form-control" id="jobDescription" rows="4" asp-for="JobDescription"></textarea>
+    </div>
+    <div class="mb-3">
+        <label for="jobDomain" class="form-label">Job Domain</label>
+        <input type="text" class="form-control" id="jobDomain" asp-for="JobDomain">
+    </div>
+    <div class="mb-3">
+        <label for="jobDeadlineDate" class="form-label">Deadline Date</label>
+        <input type="date" class="form-control" id="jobDeadlineDate" asp-for="JobDeadlineDate">
+    </div>
+    <button type="submit" class="btn btn-dark">Create Job</button>
+</form>

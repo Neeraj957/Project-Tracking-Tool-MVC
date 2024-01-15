@@ -5,7 +5,7 @@
 namespace Project_Tracking_Tool_MVC.Migrations
 {
     /// <inheritdoc />
-    public partial class Projectandtaskentity : Migration
+    public partial class rolesauthaddedrecreatedDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
