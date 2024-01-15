@@ -12,8 +12,8 @@ using Project_Tracking_Tool_MVC.Data;
 namespace Project_Tracking_Tool_MVC.Migrations
 {
     [DbContext(typeof(ProjectTrackingToolDbContext))]
-    [Migration("20240114095907_roles and auth added")]
-    partial class rolesandauthadded
+    [Migration("20240115050254_fixes in shri local")]
+    partial class fixesinshrilocal
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

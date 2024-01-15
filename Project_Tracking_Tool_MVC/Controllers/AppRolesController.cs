@@ -6,7 +6,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Project_Tracking_Tool_MVC.Controllers
 {
-    //[Authorize]
+
+    // [Authorize]
+
+
     public class AppRolesController : Controller
     {
 

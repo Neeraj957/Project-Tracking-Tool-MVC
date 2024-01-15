@@ -5,7 +5,7 @@
 namespace Project_Tracking_Tool_MVC.Migrations
 {
     /// <inheritdoc />
-    public partial class rolesauthaddedrecreatedDB : Migration
+    public partial class fixesinshrilocal : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

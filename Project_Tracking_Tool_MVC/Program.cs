@@ -19,6 +19,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>()
     .AddEntityFrameworkStores<ProjectTrackingToolDbContext>();
 builder.Services.AddScoped<IProjectRepository, ProjectReposirtory>();
 
+
 builder.Services.AddScoped<IJobRepository, JobReposirtory>();
 
 var app = builder.Build();
