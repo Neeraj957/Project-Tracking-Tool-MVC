@@ -29,17 +29,33 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="AdminDashboard" asp-action="AdminDashboard">Admin</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="ManagerDashboard" asp-action="ManagerDashboard">Manager</a>
-                        </li>
-                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="AppRoles" asp-action="Index">Roles</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="EmployeeDashboard" asp-action="EmployeeDashboard">Employee</a>
+                        <li>
+                            @if(User.Identity.IsAuthenticated)
+                            {
+                                   
+                                if(User.IsInRole("Admin"))
+                                {
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="AdminDashboard" asp-action="AdminDashboard">Admin</a>
+                                }
+                                if (User.IsInRole("Manager"))
+                                {
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="ManagerDashboard" asp-action="ManagerDashboard">Manager</a>
+                                }
+                                if (User.IsInRole("Employee"))
+                                {
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="EmployeeDashboard" asp-action="EmployeeDashboard">Employee</a>
+                                }
+                            }
+
+
+
+
                         </li>
+
+
+
                     </ul>
                 </div>
             </div>
