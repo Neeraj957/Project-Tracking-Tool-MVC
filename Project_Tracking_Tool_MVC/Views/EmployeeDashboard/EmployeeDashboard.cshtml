@@ -1,0 +1,177 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model List<Project_Tracking_Tool_MVC.Models.DomainModel.Job>
+
+@{
+}
+
+
+<div>this is employee dashboard</div>
+
+<SideMain>
+    <div class="d-flex flex-column flex-shrink-0 p-3 text-white" style="width: 280px; background-color: black">
+        <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
+           asp-controller="EmployeeDashboard" asp-action="EmployeeDashboard">
+            <svg class="bi me-2" width="40" height="32"></svg>
+            <span class="fs-4">Employee Dashboard</span>
+        </a>
+        <hr>
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                <a href="#" class="nav-link dashboard-link" aria-current="page" id="profileLink" style="color:white">
+                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#home" /></svg>
+                    Profile
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link dashboard-link" id="assignProjectLink" style="color:white">
+                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid" /></svg>
+                    My Projects
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link dashboard-link" id="managersLink" style="color:white">
+                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2" /></svg>
+                    View Kanban Board
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link dashboard-link" id="addProjectLink" style="color:white">
+                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#table" /></svg>
+                    Manage Tasks
+                </a>
+            </li>
+
+        </ul>
+        <hr>
+    </div>
+    <div class="container-md p-0 mx-auto">
+        <div class="col-lg-10 m-2 mx-auto" id="commonDisplayArea">
+            <div class="container bg-secondary p-1">
+                <h2 class="m-2">Employess Dashboard</h2>
+            </div>
+            <div class="container py-5 px-3 border my-5">
+                <div class="container py-3">
+                    <h3 class="mb-3 text-center">All Task</h3>
+                    @if (Model != null && Model.Any())
+                    {
+                        <table class="table table-bordered table-striped text-center">
+                            <thead>
+                                <tr>
+                                    <th>Task Name</th>
+                                    <th>Task Description</th>
+                                    <th>Task Domain</th>
+                                    <th>Task Status</th>
+                                    <th>Starts at </th>
+                                    <th>Dead Line</th>
+                                    <th>project</th>
+                                    
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var job in Model)
+                                {
+                                    <tr>
+                                        <td>@job.JobName</td>
+                                        <td>@job.JobDescription</td>
+                                        <td>@job.JobDomain</td>
+                                        <td>@job.Status</td>
+                                        <td>@job.JobStartDate</td>
+                                        <td>@job.JobDeadlineDate</td>
+                                        <td>@job.Project.ProjectTitle</td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-dark">
+                                                <a id="editProjectLink" class="text-white"
+                                                   asp-area=""
+                                                   asp-controller="AdminDashboard"
+                                                   asp-action="EditProjectFormPartial"
+                                                   asp-route-id="@job.JobId"
+                                                   data-project-id="@job.JobId">Edit</a>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p class="text-center">No Tasks found! Add Tasks?</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</SideMain>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            $(document).on('click', '#editProjectLink', function (e) {
+                e.preventDefault();
+
+                // Get the project ID from the data attribute
+                var projectId = $(this).data('projectId');
+
+                // Make an AJAX request to get the partial view content
+                $.ajax({
+                    url: '/AdminDashboard/EditProjectFormPartial',
+                    type: 'GET',
+                    data: { id: projectId }, // Pass the project ID as a parameter
+                    success: function (data) {
+                        // Update the content of the specified container
+                        $('#commonDisplayArea').html(data);
+                    },
+                    error: function () {
+                        // Handle errors if needed
+                    }
+                });
+            });
+
+            // Handle click on navigation links
+            $(document).on('click', '.dashboard-link', function (e) {
+                e.preventDefault();
+
+                // Remove active class from all links
+                $('.dashboard-link').removeClass('active');
+
+                // Add active class to the clicked link
+                $(this).addClass('active');
+
+                // Remove active styles from all links
+                $('.dashboard-link').css('background-color', 'black');
+                $('.dashboard-link').css('color', 'white');
+
+                // Apply active styles to the clicked link
+                $(this).css('background-color', 'white');
+                $(this).css('color', 'black');
+
+                // Load content or perform other actions based on the clicked link
+                var linkId = $(this).attr('id');
+                switch (linkId) {
+                    case 'profileLink':
+                        // Handle Profile link click
+                        break;
+                    case 'managersLink':
+                        // Handle Managers link click
+                        break;
+                    case 'addProjectLink':
+                        // Handle Add Projects link click
+                        $('#commonDisplayArea').load("/AdminDashboard/AddProjectFormPartial");
+                        break;
+                    case 'assignProjectLink':
+                        // Handle Assign Projects link click
+                        // Add specific handling for Assign Projects if needed
+                        break;
+                    // Add cases for other links as needed
+                }
+            });
+        });
+    </script>
+}

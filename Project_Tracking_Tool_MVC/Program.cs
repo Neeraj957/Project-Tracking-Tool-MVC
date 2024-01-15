@@ -19,6 +19,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>()
     .AddEntityFrameworkStores<ProjectTrackingToolDbContext>();
 builder.Services.AddScoped<IProjectRepository, ProjectReposirtory>();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
