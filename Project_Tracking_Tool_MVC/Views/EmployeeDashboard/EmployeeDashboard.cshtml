@@ -2,11 +2,9 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@model List<Project_Tracking_Tool_MVC.Models.DomainModel.Job>
-
+@model Project_Tracking_Tool_MVC.Models.ViewModels.EmployeeDashboard
 @{
 }
-
 
 <div>this is employee dashboard</div>
 
@@ -25,24 +23,14 @@
                     Profile
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link dashboard-link" id="assignProjectLink" style="color:white">
-                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid" /></svg>
-                    My Projects
-                </a>
-            </li>
+
             <li class="nav-item">
                 <a href="#" class="nav-link dashboard-link" id="managersLink" style="color:white">
                     <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2" /></svg>
-                    View Kanban Board
+                    Kanban Board
                 </a>
             </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link dashboard-link" id="addProjectLink" style="color:white">
-                    <svg class="bi me-2" width="16" height="16"><use xlink:href="#table" /></svg>
-                    Manage Tasks
-                </a>
-            </li>
+
 
         </ul>
         <hr>
@@ -55,7 +43,7 @@
             <div class="container py-5 px-3 border my-5">
                 <div class="container py-3">
                     <h3 class="mb-3 text-center">All Task</h3>
-                    @if (Model != null && Model.Any())
+                    @if (Model != null )
                     {
                         <table class="table table-bordered table-striped text-center">
                             <thead>
@@ -72,22 +60,23 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var job in Model)
+                       
+                                @foreach (var job in Model.JobsForDisplay)
                                 {
                                     <tr>
                                         <td>@job.JobName</td>
                                         <td>@job.JobDescription</td>
                                         <td>@job.JobDomain</td>
-                                        <td>@job.Status</td>
                                         <td>@job.JobStartDate</td>
+                                        <td>@job.Status</td>
                                         <td>@job.JobDeadlineDate</td>
                                         <td>@job.Project.ProjectTitle</td>
                                         <td>
                                             <button type="button" class="btn btn-sm btn-dark">
                                                 <a id="editProjectLink" class="text-white"
                                                    asp-area=""
-                                                   asp-controller="AdminDashboard"
-                                                   asp-action="EditProjectFormPartial"
+                                                   asp-controller="ManagerDashboard"
+                                                   asp-action="EditJobFormPartial"
                                                    asp-route-id="@job.JobId"
                                                    data-project-id="@job.JobId">Edit</a>
                                             </button>

@@ -68,5 +68,14 @@ namespace Project_Tracking_Tool_MVC.Controllers
             return RedirectToAction(nameof(ManagerDashboard));
         }
 
+        [HttpPost]  
+        public async Task<IActionResult> DeleteJob()
+        {
+            
+            return View();
+
+        }
+
+
     }
 }

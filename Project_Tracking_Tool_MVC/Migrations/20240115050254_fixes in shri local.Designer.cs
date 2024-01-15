@@ -12,13 +12,8 @@ using Project_Tracking_Tool_MVC.Data;
 namespace Project_Tracking_Tool_MVC.Migrations
 {
     [DbContext(typeof(ProjectTrackingToolDbContext))]
-<<<<<<<< HEAD:Project_Tracking_Tool_MVC/Migrations/20240114112327_init database.Designer.cs
-    [Migration("20240114112327_init database")]
-    partial class initdatabase
-========
-    [Migration("20240114095907_roles and auth added")]
-    partial class rolesandauthadded
->>>>>>>> c8a3ed69916fd7c7e705d46802f01c1fdb638daf:Project_Tracking_Tool_MVC/Migrations/20240114095907_roles and auth added.Designer.cs
+    [Migration("20240115050254_fixes in shri local")]
+    partial class fixesinshrilocal
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
