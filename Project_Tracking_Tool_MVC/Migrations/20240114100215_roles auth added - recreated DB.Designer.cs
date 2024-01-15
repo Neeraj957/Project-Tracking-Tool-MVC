@@ -12,8 +12,8 @@ using Project_Tracking_Tool_MVC.Data;
 namespace Project_Tracking_Tool_MVC.Migrations
 {
     [DbContext(typeof(ProjectTrackingToolDbContext))]
-    [Migration("20240113163625_IdentityTable")]
-    partial class IdentityTable
+    [Migration("20240114100215_roles auth added - recreated DB")]
+    partial class rolesauthaddedrecreatedDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -89,6 +89,10 @@ namespace Project_Tracking_Tool_MVC.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -140,6 +144,10 @@ namespace Project_Tracking_Tool_MVC.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -227,6 +235,43 @@ namespace Project_Tracking_Tool_MVC.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Project_Tracking_Tool_MVC.Models.DomainModel.Job", b =>
+                {
+                    b.Property<Guid>("JobId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("JobDeadlineDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("JobDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("JobDomain")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("JobName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("JobStartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ProjectId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("JobId");
+
+                    b.HasIndex("ProjectId");
+
+                    b.ToTable("Jobs");
+                });
+
             modelBuilder.Entity("Project_Tracking_Tool_MVC.Models.DomainModel.Project", b =>
                 {
                     b.Property<Guid>("ProjectId")
@@ -249,41 +294,19 @@ namespace Project_Tracking_Tool_MVC.Migrations
                     b.ToTable("Projects");
                 });
 
-            modelBuilder.Entity("Project_Tracking_Tool_MVC.Models.DomainModel.Task", b =>
+            modelBuilder.Entity("Project_Tracking_Tool_MVC.Models.DomainModel.ApplicationUser", b =>
                 {
-                    b.Property<Guid>("TaskId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
-                    b.Property<Guid>("ProjectId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("TaskDeadlineDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TaskDescription")
+                    b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TaskDomain")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TaskName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("TaskStartDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("TaskId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("Tasks");
+                    b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -337,10 +360,10 @@ namespace Project_Tracking_Tool_MVC.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Project_Tracking_Tool_MVC.Models.DomainModel.Task", b =>
+            modelBuilder.Entity("Project_Tracking_Tool_MVC.Models.DomainModel.Job", b =>
                 {
                     b.HasOne("Project_Tracking_Tool_MVC.Models.DomainModel.Project", "Project")
-                        .WithMany("Tasks")
+                        .WithMany("Jobs")
                         .HasForeignKey("ProjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -350,7 +373,7 @@ namespace Project_Tracking_Tool_MVC.Migrations
 
             modelBuilder.Entity("Project_Tracking_Tool_MVC.Models.DomainModel.Project", b =>
                 {
-                    b.Navigation("Tasks");
+                    b.Navigation("Jobs");
                 });
 #pragma warning restore 612, 618
         }
