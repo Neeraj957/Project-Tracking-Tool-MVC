@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Project_Tracking_Tool_MVC.Migrations
 {
     /// <inheritdoc />
-    public partial class first : Migration
+    public partial class shrimigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

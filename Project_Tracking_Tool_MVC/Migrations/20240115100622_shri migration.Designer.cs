@@ -12,8 +12,8 @@ using Project_Tracking_Tool_MVC.Data;
 namespace Project_Tracking_Tool_MVC.Migrations
 {
     [DbContext(typeof(ProjectTrackingToolDbContext))]
-    [Migration("20240115063146_first")]
-    partial class first
+    [Migration("20240115100622_shri migration")]
+    partial class shrimigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
