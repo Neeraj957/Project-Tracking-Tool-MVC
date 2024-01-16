@@ -45,7 +45,6 @@ namespace Project_Tracking_Tool_MVC.Controllers
 
             await _projectRepository.AddAsync(project);
 
-            //return View("~/Views/AdminDashboard/AdminDashboard.cshtml");
             return RedirectToAction(nameof(AdminDashboard));
         }
 
@@ -58,14 +57,13 @@ namespace Project_Tracking_Tool_MVC.Controllers
             {
                 var editProjectRequest = new EditProjectRequest
                 {
-                    ProjectId = project.ProjectId, // Make sure to include the ProjectId in the EditProjectRequest
+                    ProjectId = project.ProjectId,
                     ProjectTitle = project.ProjectTitle,
                     ProjectDescription = project.ProjectDescription,
                 };
                 return PartialView("_EditProjectForm", editProjectRequest);
             }
 
-            // You might want to handle the case where the project is not found differently
             return PartialView("_EditProjectForm", null);
         }
 
@@ -93,12 +91,10 @@ namespace Project_Tracking_Tool_MVC.Controllers
                     //Show error notification
                 }
 
-                // You might want to return a JSON response for AJAX requests
                 return RedirectToAction(nameof(AdminDashboard));
 
             }
 
-            // If there are validation errors or the project is not found, return the partial view with errors
             return PartialView("_EditProjectForm", editProjectRequest);
         }
 

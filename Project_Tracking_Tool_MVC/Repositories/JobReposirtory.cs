@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Project_Tracking_Tool_MVC.Data;
 using Project_Tracking_Tool_MVC.Models.DomainModel;
+using Project_Tracking_Tool_MVC.Models.ViewModels;
+using System.Net.NetworkInformation;
 
 namespace Project_Tracking_Tool_MVC.Repositories
 {
@@ -52,9 +54,30 @@ namespace Project_Tracking_Tool_MVC.Repositories
 
             if (existingJob != null)
             {
+
                 existingJob.JobName = job.JobName;
                 existingJob.JobDescription = job.JobDescription;
+                existingJob.JobDomain = job.JobDomain;
+                existingJob.Status = job.Status;
+                existingJob.JobDeadlineDate = job.JobDeadlineDate;
 
+                await _projectTrackingToolDbContext.SaveChangesAsync();
+
+                return existingJob;
+
+            }
+            return null;
+        }
+
+        public async Task<Job?> UpdateJobStatusAsync(Job job)
+         {
+            var existingJob = await _projectTrackingToolDbContext.Jobs.FindAsync(job.JobId);
+
+            if (existingJob != null)
+            {
+
+
+                existingJob.Status = job.Status;
                 await _projectTrackingToolDbContext.SaveChangesAsync();
 
                 return existingJob;

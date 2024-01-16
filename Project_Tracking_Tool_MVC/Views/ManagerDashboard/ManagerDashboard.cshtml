@@ -48,7 +48,6 @@
                                     <th>Project Name</th>
                                     <th>Project Description</th>
                                     <th>Date Created</th>
-                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -100,12 +99,12 @@
                                         <td>@job.Project.ProjectTitle</td>
                                         <td>
                                             <button type="button" class="btn btn-sm btn-dark">
-                                                <a id="editProjectLink" class="text-white"
+                                                <a id="editJobLink" class="text-white"
                                                    asp-area=""
                                                    asp-controller="ManagerDashboard"
                                                    asp-action="EditJobFormPartial"
                                                    asp-route-id="@job.JobId"
-                                                   data-project-id="@job.JobId">Edit</a>
+                                                   data-job-id="@job.JobId">Edit</a>
                                             </button>
                                         </td>
                                     </tr>
@@ -115,7 +114,7 @@
                     }
                     else
                     {
-                        <p class="text-center">No Projects found! Add Projects?</p>
+                        <p class="text-center">No Job found! Add Job?</p>
                     }
                 </div>
             </div>
@@ -132,45 +131,37 @@
             $(document).on('click', '#editJobLink', function (e) {
                 e.preventDefault();
 
-                // Get the job ID from the data attribute
-                var jobId = $(this).data('JobId');
+                var jobId = $(this).data('job-id');
 
-                // Make an AJAX request to get the partial view content
+                
                 $.ajax({
                     url: '/ManagerDashboard/EditJobFormPartial',
                     type: 'GET',
-                    data: { id: jobId }, // Pass the job ID as a parameter
+                    data: { id: jobId }, 
                     success: function (data) {
-                        // Update the content of the specified container
                         $('#commonDisplayArea').html(data);
                     },
                     error: function () {
-                        // Handle errors if needed
                     }
                 });
             });
 
-            // Handle click on navigation links
             $(document).on('click', '.dashboard-link', function (e) {
                 e.preventDefault();
 
-                // Remove active class from all links
                 $('.dashboard-link').removeClass('active');
 
-                // Add active class to the clicked link
                 $(this).addClass('active');
 
-                // Remove active styles from all links
                 $('.dashboard-link').css('background-color', 'black');
                 $('.dashboard-link').css('color', 'white');
 
-                // Apply active styles to the clicked link
                 $(this).css('background-color', 'white');
                 $(this).css('color', 'black');
                 var linkId = $(this).attr('id');
                 switch (linkId) {
                     case 'profileLink':
-                        $('#commonDisplayArea').load("/ManagerDashboard/CreateJobFormPartial");
+                        $('#commonDisplayArea').load("/ManagerDashboard/Profile");
                         break;
                     case 'createJobLink':
                         $('#commonDisplayArea').load("/ManagerDashboard/CreateJobFormPartial");

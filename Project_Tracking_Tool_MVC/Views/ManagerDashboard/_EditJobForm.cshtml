@@ -1,0 +1,58 @@
+﻿@model Project_Tracking_Tool_MVC.Models.ViewModels.EditJobRequest
+@{
+}
+
+@if (Model != null)
+{
+    <form class="mx-5 my-5" asp-controller="ManagerDashboard" asp-action="UpdateJob" method="post">
+        <div class="mb-3">
+            <label for="jobId" class="form-label">Job Id</label>
+            <input type="text" class="form-control" id="jobId" asp-for="JobId" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="projectTitle" class="form-label">Parent Project</label>
+            <input type="text" class="form-control" id="projectTitle" asp-for="Project.ProjectTitle"  readonly>
+        </div>
+        <div class="mb-3">
+            <label for="jobName" class="form-label">Job Name</label>
+            <input type="text" class="form-control" id="jobName" asp-for="JobName">
+        </div>
+        <div class="mb-3">
+            <label for="jobDescription" class="form-label">Job Description</label>
+            <textarea class="form-control" id="jobDescription" rows="4" asp-for="JobDescription"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="jobDomain" class="form-label">Job Domain</label>
+            <input type="text" class="form-control" id="jobDomain" asp-for="JobDomain">
+        </div>
+        <div class="mb-3">
+            <label for="jobStatus" class="form-label">Job Status</label>
+            <select class="form-control" id="jobStatus" asp-for="Status">
+                <option value="BACKLOG">Backlog</option>
+                <option value="ACTIVE">Active</option>
+                <option value="REVIEWING">Reviewing</option>
+                <option value="DONE">Done</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="jobDeadlineDate" class="form-label">Job Deadline Date</label>
+            <input type="date" class="form-control" id="jobDeadlineDate" asp-for="JobDeadlineDate">
+        </div>
+        <div class="mb-3">
+            <div class="d-flex">
+                <button type="submit" class="btn btn-dark">Update</button>
+                <button type="submit" class="btn btn-danger ms-2"
+                        asp-area=""
+                        asp-controller="ManagerDashboard"
+                        asp-action="DeleteJob">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </form>
+}
+
+else
+{
+    <p> Job not found!</p>
+}

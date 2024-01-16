@@ -12,6 +12,8 @@ namespace Project_Tracking_Tool_MVC.Repositories
 
         Task<Job?> UpdateAsync(Job job);
 
+        Task<Job?> UpdateJobStatusAsync(Job job);
+
         Task<Job?> DeleteAsync(Guid id);
     }
 }

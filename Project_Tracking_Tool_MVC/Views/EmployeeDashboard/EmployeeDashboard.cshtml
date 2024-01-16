@@ -6,8 +6,6 @@
 @{
 }
 
-<div>this is employee dashboard</div>
-
 <SideMain>
     <div class="d-flex flex-column flex-shrink-0 p-3 text-white" style="width: 280px; background-color: black">
         <a class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
@@ -35,50 +33,48 @@
         </ul>
         <hr>
     </div>
-    <div class="container-md p-0 mx-auto">
-        <div class="col-lg-10 m-2 mx-auto" id="commonDisplayArea">
-            <div class="container bg-secondary p-1">
-                <h2 class="m-2">Employess Dashboard</h2>
+    <div class="container-md p-0 mx-auto" style="height: 100vh;">
+        <div class="col-lg-10 m-2 mx-auto" id="commonDisplayArea" style="height: 80vh; overflow-y: auto;">
+            <div class="container bg-secondary p-1" style="position: sticky; top: 0; z-index: 100;">
+                <h2 class="m-2">Employee Dashboard</h2>
             </div>
             <div class="container py-5 px-3 border my-5">
                 <div class="container py-3">
                     <h3 class="mb-3 text-center">All Task</h3>
-                    @if (Model != null )
+                    @if (Model != null)
                     {
                         <table class="table table-bordered table-striped text-center">
                             <thead>
                                 <tr>
-                                    <th>Task Name</th>
-                                    <th>Task Description</th>
-                                    <th>Task Domain</th>
-                                    <th>Task Status</th>
-                                    <th>Starts at </th>
+                                    <th>Job Name</th>
+                                    <th>Job Description</th>
+                                    <th>Job Domain</th>
+                                    <th>Job Status</th>
+                                    <th>Starts Date </th>
                                     <th>Dead Line</th>
-                                    <th>project</th>
-                                    
+                                    <th>Parent Project</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                       
                                 @foreach (var job in Model.JobsForDisplay)
                                 {
                                     <tr>
                                         <td>@job.JobName</td>
                                         <td>@job.JobDescription</td>
                                         <td>@job.JobDomain</td>
+                                        <td data-job-status="@job.Status">@job.Status</td>
                                         <td>@job.JobStartDate</td>
-                                        <td>@job.Status</td>
                                         <td>@job.JobDeadlineDate</td>
                                         <td>@job.Project.ProjectTitle</td>
                                         <td>
                                             <button type="button" class="btn btn-sm btn-dark">
-                                                <a id="editProjectLink" class="text-white"
+                                                <a id="editJobStatusLink" class="text-white"
                                                    asp-area=""
-                                                   asp-controller="ManagerDashboard"
-                                                   asp-action="EditJobFormPartial"
+                                                   asp-controller="EmployeeDashboard"
+                                                   asp-action="EditJobStatusPartial"
                                                    asp-route-id="@job.JobId"
-                                                   data-project-id="@job.JobId">Edit</a>
+                                                   data-job-id="@job.JobId">Edit</a>
                                             </button>
                                         </td>
                                     </tr>
@@ -88,12 +84,13 @@
                     }
                     else
                     {
-                        <p class="text-center">No Tasks found! Add Tasks?</p>
+                        <p class="text-center">No Jobs found! Add Jobs?</p>
                     }
                 </div>
             </div>
         </div>
     </div>
+
 
 
 </SideMain>
@@ -102,65 +99,56 @@
     <script>
         $(document).ready(function () {
 
-            $(document).on('click', '#editProjectLink', function (e) {
+            $(document).on('click', '#editJobStatusLink', function (e) {
                 e.preventDefault();
 
-                // Get the project ID from the data attribute
-                var projectId = $(this).data('projectId');
+                var jobId = $(this).data('job-id');
 
-                // Make an AJAX request to get the partial view content
+
                 $.ajax({
-                    url: '/AdminDashboard/EditProjectFormPartial',
+                    url: '/EmployeeDashboard/EditJobStatusPartial',
                     type: 'GET',
-                    data: { id: projectId }, // Pass the project ID as a parameter
+                    data: { id: jobId },
                     success: function (data) {
-                        // Update the content of the specified container
                         $('#commonDisplayArea').html(data);
                     },
                     error: function () {
-                        // Handle errors if needed
                     }
                 });
             });
 
-            // Handle click on navigation links
             $(document).on('click', '.dashboard-link', function (e) {
                 e.preventDefault();
 
-                // Remove active class from all links
                 $('.dashboard-link').removeClass('active');
 
-                // Add active class to the clicked link
                 $(this).addClass('active');
 
-                // Remove active styles from all links
                 $('.dashboard-link').css('background-color', 'black');
                 $('.dashboard-link').css('color', 'white');
 
-                // Apply active styles to the clicked link
                 $(this).css('background-color', 'white');
                 $(this).css('color', 'black');
 
-                // Load content or perform other actions based on the clicked link
                 var linkId = $(this).attr('id');
                 switch (linkId) {
                     case 'profileLink':
-                        // Handle Profile link click
                         break;
                     case 'managersLink':
-                        // Handle Managers link click
                         break;
                     case 'addProjectLink':
-                        // Handle Add Projects link click
                         $('#commonDisplayArea').load("/AdminDashboard/AddProjectFormPartial");
                         break;
                     case 'assignProjectLink':
-                        // Handle Assign Projects link click
-                        // Add specific handling for Assign Projects if needed
+
                         break;
-                    // Add cases for other links as needed
                 }
             });
+
+            $('td[data-job-status="BACKLOG"]').css('background-color', 'red');
+            $('td[data-job-status="ACTIVE"]').css('background-color', 'yellow');
+            $('td[data-job-status="REVIEW"]').css('background-color', 'blue');
+            $('td[data-job-status="DONE"]').css('background-color', 'green');
         });
     </script>
 }
