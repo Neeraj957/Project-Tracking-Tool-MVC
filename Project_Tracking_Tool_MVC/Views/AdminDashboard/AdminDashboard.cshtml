@@ -98,60 +98,44 @@
             $(document).on('click', '#editProjectLink', function (e) {
                 e.preventDefault();
 
-                // Get the project ID from the data attribute
                 var projectId = $(this).data('projectId');
 
-                // Make an AJAX request to get the partial view content
                 $.ajax({
                     url: '/AdminDashboard/EditProjectFormPartial',
                     type: 'GET',
-                    data: { id: projectId }, // Pass the project ID as a parameter
+                    data: { id: projectId }, 
                     success: function (data) {
-                        // Update the content of the specified container
                         $('#commonDisplayArea').html(data);
                     },
                     error: function () {
-                        // Handle errors if needed
                     }
                 });
             });
 
-            // Handle click on navigation links
             $(document).on('click', '.dashboard-link', function (e) {
                 e.preventDefault();
 
-                // Remove active class from all links
                 $('.dashboard-link').removeClass('active');
 
-                // Add active class to the clicked link
                 $(this).addClass('active');
 
-                // Remove active styles from all links
                 $('.dashboard-link').css('background-color', 'black');
                 $('.dashboard-link').css('color', 'white');
 
-                // Apply active styles to the clicked link
                 $(this).css('background-color', 'white');
                 $(this).css('color', 'black');
 
-                // Load content or perform other actions based on the clicked link
                 var linkId = $(this).attr('id');
                 switch (linkId) {
                     case 'profileLink':
-                        // Handle Profile link click
                         break;
                     case 'managersLink':
-                        // Handle Managers link click
                         break;
                     case 'addProjectLink':
-                        // Handle Add Projects link click
                         $('#commonDisplayArea').load("/AdminDashboard/AddProjectFormPartial");
                         break;
                     case 'assignProjectLink':
-                        // Handle Assign Projects link click
-                        // Add specific handling for Assign Projects if needed
                         break;
-                    // Add cases for other links as needed
                 }
             });
         });
